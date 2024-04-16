@@ -74,4 +74,10 @@ for (i in (1:length(cohortJsonFiles))) {
 }
 
 
-
+cohortDefinitionSet <- CohortGenerator::getCohortDefinitionSet(
+  settingsFileName = "CohortDefinitionSet/inst/Cohorts.csv",
+  jsonFolder = "CohortDefinitionSet/inst/cohorts",
+  sqlFolder = "CohortDefinitionSet/inst/sql/sql_server"
+)
+saveRDS(object = cohortDefinitionSet, file = "CohortDefinitionSet/CohortDefinitionSet.RDS")
+cohortDefinitionSet <- readRDS("CohortDefinitionSet/CohortDefinitionSet.RDS")
