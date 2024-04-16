@@ -40,17 +40,17 @@ CohortGenerator::saveCohortDefinitionSet(
 )
 
 # generate cohort sql using latest version of circeR
-# remotes::install_github("OHDSI/circeR")
 circeOptions <- CirceR::createGenerateOptions(generateStats = TRUE)
 
 cohortJsonFiles <-
-  list.files(path = file.path("inst", "cohorts"), pattern = ".json") |> sort()
+  list.files(path = file.path("CohortDefinitionSet", "inst", "cohorts"), pattern = ".json", full.names = TRUE) |> sort()
+
 
 for (i in (1:length(cohortJsonFiles))) {
   jsonFileName <- cohortJsonFiles[i]
   sqlFileName <-
     stringr::str_replace_all(
-      string = jsonFileName,
+      string = basename(jsonFileName),
       pattern = stringr::fixed(".json"),
       replacement = ".sql"
     )
@@ -58,26 +58,20 @@ for (i in (1:length(cohortJsonFiles))) {
   writeLines(paste0(" - Generating ", sqlFileName))
   
   json <-
-    SqlRender::readSql(sourceFile = file.path("inst", "cohorts", jsonFileName))
+    SqlRender::readSql(sourceFile = jsonFileName)
   sql <-
     CirceR::buildCohortQuery(expression = json, options = circeOptions)
   writeLines(paste0(" --", sqlFileName))
   unlink(
-    x = file.path("inst", "sql", "sql_server", sqlFileName),
+    x = file.path("CohortDefinitionSet", "inst", "sql", "sql_server", sqlFileName),
     recursive = TRUE,
     force = TRUE
   )
   SqlRender::writeSql(
     sql = sql,
-    targetFile = file.path("inst", "sql", "sql_server", sqlFileName)
+    targetFile = file.path("CohortDefinitionSet", "inst", "sql", "sql_server", sqlFileName)
   )
 }
-
-
-
-
-dir.create("d://git//myositis//") # where you clone the repository
-setwd("d://git//myositis//")
 
 
 
