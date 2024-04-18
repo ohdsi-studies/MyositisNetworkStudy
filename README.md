@@ -46,5 +46,5 @@ OHDSI Network Study: Dermatomyositis Phenotype Evaluation
 
 ### Study types
 
-- `Clinical Application` if the study aims to answer a clinically relevant question, for example 'Does drug A cause outcome B?'.
+- `Clinical Application`
 
