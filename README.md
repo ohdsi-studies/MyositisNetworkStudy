@@ -1,15 +1,5 @@
-StudyRepoTemplate
+OHDSI Network Study: Dermatomyositis Phenotype Evaluation
 =================
-
-An OHDSI study repository is expected to have a README.md file where the header conforms to a standard. A template README file is provided here:
-
-**[README file template](templateREADME.md)**
-
-When initiating a repository, please copy this file, rename it to 'README.md', and fill in the fields as appropriate.
-
-The information in the repository README file will be used to automatically update the [list of OHDSI research studies](https://data.ohdsi.org/OhdsiStudies/), so it is important to fill in the template accurately, and keep it up-to-date.
-
-## Elements in the README template
 
 | Element | Description |
 | ------- | ----------- |
@@ -53,18 +43,9 @@ Copy the relevant markdown code from [this page](badgesMarkdownCode.md), and pas
 
 ### Analytics Use Cases
 
-Choose one or more options from: 
-
-- `Characterization`
-- `Population-Level Estimation`, or
-- `Patient-Level Prediction` 
-
-See [the Data Analytics Use Cases chapter](https://ohdsi.github.io/TheBookOfOhdsi/DataAnalyticsUseCases.html) for more details.
+- Cohort Definition Evaluation
 
 ### Study types
 
-Can be either:
-
-- `Methods Research` if the study explores a methodological question, for example an evaluation of various propensity score approaches. 
-- `Clinical Application` if the study aims to answer a clinically relevant question, for example 'Does drug A cause outcome B?'.
+- Clinical Application
 
