@@ -1,5 +1,5 @@
 rootFolder <- "D:\\git\\github\\ohdsi-studies\\MyositisNetworkStudy"
-
+setwd(rootFolder)
 baseUrl <- "https://api.ohdsi.org/WebAPI"
 
 publicAtlasCohortIds <-
@@ -38,8 +38,8 @@ cohortDefinitionSet <-
   OhdsiHelpers::updateSqlInCohortDefinitionSet(cohortDefinitionSet = cohortDefinitionSet)
 
 
-saveRDS(object = cohortDefinitionSet, file = "CohortDefinitionSet/CohortDefinitionSet.RDS")
-cohortDefinitionSet <- readRDS("CohortDefinitionSet/CohortDefinitionSet.RDS")
+saveRDS(object = cohortDefinitionSet, file = "CohortDefinitionSet.RDS")
+cohortDefinitionSet <- readRDS("CohortDefinitionSet.RDS")
 cohortDefinitionSet |> readr::write_excel_csv(file = "CohortDefinitionSet.csv")
 
 # save the full specification as csv files
