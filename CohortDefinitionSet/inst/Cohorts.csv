@@ -1,0 +1,12 @@
+cohort_id,cohort_name
+1,"Test Adult Dermatomyositis - Sensitive (18+ and 2x DM, incidence)"
+2,"Test Adult Dermatomyositis - (Specific, incidence)"
+3,Test Adult Dermatomyositis - Specific (prevalence)
+4,PheVal Adult Dermatomyositis - Prevalence
+5,Test Adult Dermatomyositis - Sensitive (18+ and 2x DM prevalence)
+6,Revised_PheVal xSpec Adult Dermatomyositis - Extra Specific
+7,Revised_PheVal xSens Adult Dermatomyositis - Ultra Sensitive
+8,"Test Adult Dermatomyositis - (Specific, provider)"
+9,Test Adult Dermatomyositis - (Prevalent; IIM antibody ordered)
+10,"Test Adult Dermatomyositis - (Prevalent, IIM antibody = positive)"
+11,Test Adult Dermatomyositis - (Single DM dx)
