@@ -57,4 +57,3 @@ Can be either:
 
 - `Methods Research` if the study explores a methodological question, for example an evaluation of various propensity score approaches. 
 - `Clinical Application` if the study aims to answer a clinically relevant question, for example 'Does drug A cause outcome B?'.
-
