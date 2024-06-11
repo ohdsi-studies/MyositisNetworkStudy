@@ -1,11 +1,11 @@
 .Rproj.user
+.Rproj
 .Rhistory
 .RData
 .Ruserdata
 *.html
 
+results
 Documents/*.html
-Documents/*.pdf
 Documents/*.tex
 Documents/*.log
-Documents/*.docx

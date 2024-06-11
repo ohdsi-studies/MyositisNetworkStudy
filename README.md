@@ -1,59 +1,69 @@
-StudyRepoTemplate
+
+OHDSI Network Study: Dermatomyositis Phenotype Evaluation
 =================
 
-An OHDSI study repository is expected to have a README.md file where the header conforms to a standard. A template README file is provided here:
+This is an OHDSI study being coordinated by the Johns Hopkins Myositis Center. Please see [our post on the OHDSI forum](https://forums.ohdsi.org/t/network-study-seeking-data-partners-in-rheumatology/21584) for more information.
 
-**[README file template](templateREADME.md)**
+The Coordinating site is currently in the process of obtaining IRB approval through the Johns Hopkins Medicine IRB. The JHU Application is IRB00373992 and the JHU PI is Dr. Christopher Mecoli, MD. Participating data partners should ensure that ethics board or IRB approval has been obtained as appropriate.
+  
+### Notes:
+  
+1. All site-dependent variables are configured at the 'env setup' section of the RunMe.R script. Please edit those variables according to your site's database needs. The values  used by the coordinating study team at JHU have been preserved as a reference.
+2. This script assumes that you have RTools and Java setup to run HADES  packages. [See the instructions from Hades](https://ohdsi.github.io/Hades/rSetup.html).   
+3. The use of either a container or renv is recommended, but not included in the script. Packages will be installed as part of this package. Please ensure that you are in an isolated R environment before executing if needed.
+4. After the study package has been executed, a /results folder and results.zip  file will be created. Please inspect these files to ensure that the contents do   not contain any patient data (they normally should not!) and submit results.zip   using the OneDrive link provided to you. If you need a OneDrive link, please contact the study team. The study team will be notified once files are received.      
+5. Please reach out to the study team with any questions or concerns.
 
-When initiating a repository, please copy this file, rename it to 'README.md', and fill in the fields as appropriate.
 
-The information in the repository README file will be used to automatically update the [list of OHDSI research studies](https://data.ohdsi.org/OhdsiStudies/), so it is important to fill in the template accurately, and keep it up-to-date.
+### To participate in this network study:
+ 1. Review the study protocol found in the documents directory and ensure that your site meets the inclusion criteria.
+ 2. Contact the study team for a submission link.
+ 3. Clone the repository `git clone https://github.com/ohdsi-studies/MyositisNetworkStudy.git` or using the RStudio GUI.
+ 4. Modify the 'env setup' section of the RunMe.R script to connect to your CDM and set metadata for the execution. A file zip file with the results and meta data will be created
+ 5. Submit the generated zip file to the coordinating study team using the OneDrive link provided.
 
-## Elements in the README template
+  
+
+
+
 
 | Element | Description |
 | ------- | ----------- |
-| [Study title]      | A meaningful title of the research project.            
-| Study status badge | A badge indicating the study status. See [below](#study-status) for valid options. |
-| Analytics use case | One or more analytics use cases included in the study (in a comma-separated list). See [below](#analytics-use-cases) for valid options. |
-| Study type | The type of study. See [below](#study-types) for valid options. |
-| Tags | Zero, one, or more additional keywords that can be used to filter the list of studies. The list of tags is not restricted, but be conservative in making up new tags. For example: `EHDEN` to identify studies that are part of the [EHDEN project](https://www.ehden.eu/). |
-| Study lead | The name of the study lead.|
-| Study lead forums tag | The OHDSI forums tag of the study lead, which can be used to contact the lead. It is recommended to make this a hyperlink to lead's forums profile |
-| Study start date | When did work on the study commence? This date typically indicates when development of the protocol was initiated. Format: [Month] [Day], [Year] (e.g. May 1, 2019)|
-| Study end date | When was the study completed? This typically indicates when the analyses were completed and the results have been collected. Do not enter future (planned) dates here. Format: [Month] [Day], [Year] (e.g. May 1, 2019)| 
-| Protocol | A hyperlink to the protocol. The protocol is expected to be a document in the study repository itself. | 
-| Publications | Zero, one or more hyperlinks to papers produced as part of the study (comma-separated). | 
-| Results explorer | A hyperlink to a web app (e.g. a Shiny app) where the results of the study can be explored. |
+| Study Title | Creation and Evaluation of Dermatomyositis Phenotypes Across Different Database Sources         
+| Study Status | <img src="https://img.shields.io/badge/Study%20Status-Started-blue.svg" alt="Study Status: Started"> |
+| Next Steps | Generate the 8 phenotypes on multiple external OMOP CDMs (at least 1 claims and 1 EHR based CDMs) and run Phevaluator on external CDMs |
+| Research Question | How do dermatomyositis phenotypes perform across different data sources (EHR, claims, registries) that may have differences in how the OMOP ETL was performed? |
+| Uncertainty | We remain uncertain as to how our phenotypes will perform across other database types (claims, other EHR, etc). 
+| Study type | Clinical Application. |
+| Tags | `OHDSI` `Myositis` |
+| Study lead | Dr. Christopher Mecoli, MD|
+| Study lead forums tag | Christopher_Mecoli|
+| Study team | See protocol |
+| Phenotype Development | Created and tested 8 myositis phenotypes with Phevaluator using Johns Hopkins OMOP CDM |
+| Phenotype Evaluation | Currently under development process. This is the purpose of the study |
+| Cohort Definitions | Myositis Phenotype Cohort IDs are defined in the `cohorts` directory. These can also be viewed on the [OHDSI Atlas demo instance](https://atlas-demo.ohdsi.org/); ID: 1781804,1788567,1787425,1788503,1789031,1789032,1788875,1789289 |
+| Cohort Diagnostics | Currently under development process. (A hyperlink to the R Shiny app where the cohort diagnostics results can be viewed.) |
+| Analysis Specifications | Develop a OHDSI protocol to run a multi-centric patient level prediction study on complication comparisons among different drug use for dermatomyositis patients. |
+| HADES Packages | DatabaseConnecter, CohortDiagnostics, Phevaluator |
+| Study Sites | Pending, but likely to include Stanford, Columbia, and other datasources accessed through J&J |
+| Results explorer | N/A  |
+| Study start date | Dec 11, 2023 |
+| Study end date | Not completed| 
+| Protocol | See documents directory | 
+| Publications | N/A  | 
 
-### Study Status
 
-Choose one of the following options:
+### Study Progress
 
-| Badge             | Description                          |
-| ----------------- | ------------------------------------ |
-| <img src="https://img.shields.io/badge/Study%20Status-Repo%20Created-lightgray.svg" alt="Study Status: Repo Created"> | The study repository has just been created. Work has not yet commenced. | 
-| <img src="https://img.shields.io/badge/Study%20Status-Started-blue.svg" alt="Study Status: Started"> | A first commit was made (to something else than the README file). Work has commenced. |
-| <img src="https://img.shields.io/badge/Study%20Status-Design%20Finalized-brightgreen.svg" alt="Study Status: Design Finalized"> | The protocol and study code have been finalized. | 
-| <img src="https://img.shields.io/badge/Study%20Status-Results%20Available-yellow.svg" alt="Study Status: Results Available"> | The study results are publicly available, for example in a paper or results explorer app. | 
-| <img src="https://img.shields.io/badge/Study%20Status-Complete-orange.svg" alt="Study Status: Complete"> | The study is complete, no further dissemination planned. | 
-| <img src="https://img.shields.io/badge/Study%20Status-Suspended-red.svg" alt="Study Status: Suspended"> | The study has been suspended, and may or may not be continued at a later point in time. | 
+| Study Attribute | Value |
+| ------- | ----------- |
+| IRB materials sufficient for review | Yes |
+| Cohort definition(s) available | Yes |
+| Data partner recruitment status | Ready |
+| Deadline for adding new data partners | N/A |
+| Protocol building team recruitment status | ready |
+| Deadline for adding new protocol building team members | N/A |
+| Manuscript preparation team recruitment status | Ready |
+| Deadline for adding new manuscript preparation team members | N/A |
 
-Copy the relevant markdown code from [this page](badgesMarkdownCode.md), and paste it in your README file, just below the study title.
 
-### Analytics Use Cases
-
-Choose one or more options from: 
-
-- `Characterization`
-- `Population-Level Estimation`, or
-- `Patient-Level Prediction` 
-
-See [the Data Analytics Use Cases chapter](https://ohdsi.github.io/TheBookOfOhdsi/DataAnalyticsUseCases.html) for more details.
-
-### Study types
-
-Can be either:
-
-- `Methods Research` if the study explores a methodological question, for example an evaluation of various propensity score approaches. 
-- `Clinical Application` if the study aims to answer a clinically relevant question, for example 'Does drug A cause outcome B?'.
