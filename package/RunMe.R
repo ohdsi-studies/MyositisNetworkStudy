@@ -3,33 +3,9 @@
 #coordinated by the Johns Hopkins Myositis Center. Please see our post on the
 #OHDSI forum for links the protocol, repository, or for more information.
 #
-#The Coordinating site has obtained IRB approval through the Johns Hopkins
-#Medicine IRB. The JHU Application # is IRB00373992 and the JHU PI is Dr.
-#Christopher Mecoli, MD. Participating data partners should insure that ethics
-#board or IRB approval has been obtained as appropriate.
-#
-## Notes:
-#
-#1. All site-dependent variables are configured at the 'env setup' section.
-#Please edit those variables according your site's database schema. The values
-#used by the coordinating study team at JHU have been preserved as comments and
-#can be used as a reference.
-#
-#2. This script assumes that you have RTools and Java setup to run HADES
-#packages. See the instructions at https://ohdsi.github.io/Hades/rSetup.html
-#
-#3. The use of either a container or renv is recommended, but not included in
-#the script. Packages will be installed as part of this package. Please ensure
-#that you are in an isolated R environment before executing if needed.
-#
-#4. After the study package has been executed, a /results folder and results.zip
-#file will be created. Please inspect these files to ensure that the contents do
-#not contain any patient data (they normally should not!) and submit results.zip
-#using the OneDrive link provided to you. If you need a onedrive link, please
-#contact the study team. The study team will be notified once files are
-#received.
-#
-#5. Please reach out to the study team with any questions or concerns.
+# Packages will be installed by this script. Please see the repository readme for
+# details on setting up an isolated environment and for general information on study
+# package execution.
 
 
 
@@ -73,14 +49,16 @@ Sys.setenv(JAVA_HOME = 'C:/Program Files/Microsoft/jdk-17.0.8.101-hotspot')
 options(java.parameters = '-Xmx10000m')
 
 
+
 ## A shortname to describe your cohort. Do not include spaces. The value used at JHU shown as a reference.
 databaseId <- 'JHM_OMOP'
 
 
 ## Path to database connector drivors used for your RDMS.
 #  Use DatabaseConnector::downloadJdbcDrivers(<driver>) to download drivers for your RDMS.
-Sys.setenv(DATABASECONNECTOR_JAR_FOLDER = '~/data_projects/database_drivers')
-pathToDriver = Sys.getenv('DATABASECONNECTOR_JAR_FOLDER')
+ 
+pathToDriver = '~/data_projects/database_drivers'
+## Auth DLL needed for some MSSQL configurations
 
 
 
@@ -97,23 +75,11 @@ pathToDriver = Sys.getenv('DATABASECONNECTOR_JAR_FOLDER')
 # These should not be changed by the site
 
 
-
-# False uses cohorts from repository. True uses WebApi and saves results to repository for updating cohorts.
-use_web_api = FALSE
-
 # cohorts
 xSpecCohortId <- 1788683
 xSensCohortId <- 1788688
 prevalenceCohortId <- 1788504
-phenotypeCohortIds <-
-  c(1781804,
-    1788567,
-    1787425,
-    1788503,
-    1789031,
-    1789032,
-    1788875,
-    1789289)
+phenotypeCohortIds <- c(1781804,1788567,1787425,1788503,1789031,1789032,1788875,1789289)
 
 
 # dependancies
@@ -128,14 +94,6 @@ packages <- list(
   list(name = 'cli', source = 'CRAN'),
   list(name = 'stringr', source = 'CRAN')
 )
-
-if (use_web_api) {
-  baseUrl <- 'http://api.ohdsi.org:8080/WebAPI'
-  packages[[length(packages) + 1]] <-
-    list(name = 'ROhdsiWebApi', source = 'GitHub')
-} else {
-  load('cohorts/cohorts.rda')
-}
 
 
 # output
@@ -196,37 +154,36 @@ if (exists('connectionString')) {
   connectionDetails <- createConnectionDetails(
     dbms = dbms,
     pathToDriver = pathToDriver,
-    connectionString = 'jdbc:sqlserver://esmpmdbpr4.esm.johnshopkins.edu:1433;database=Myositis_OMOP;integratedSecurity=true;authenticationScheme=JavaKerberos;encrypt=false'
+    connectionString = connectionString
   )
 } else {
   connectionDetails <- createConnectionDetails(
-    dbms = 'sql server',
-    server = 'ESMPMDBPR4.WIN.AD.JHU.EDU',
-    pathToDriver = Sys.getenv('DATABASECONNECTOR_JAR_FOLDER'),
-    extraSettings = 'integratedSecurity=true;encrypt=false;'
+    dbms = dbms,
+    server = server,
+    pathToDriver = pathToDriver,
+    extraSettings = extraSettings
   )
 }
 
 # Extract cohort definitions for xSpec, xSen, prevalence, and covariate exclusion
-if (use_web_api) {
-  evaluatedCohorts <- exportCohortDefinitionSet(baseUrl = baseUrl,
-                                                cohortIds = phenotypeCohortIds,
-                                                generateStats = TRUE)
-  phevaluatorCohortIds <-
-    c(xSpecCohortId, xSensCohortId, prevalenceCohortId)
-  phevaluatorCohorts <- exportCohortDefinitionSet(baseUrl = baseUrl,
-                                                  cohortIds = phevaluatorCohortIds,
-                                                  generateStats = TRUE)
-  xSpecDefinitionSql <-
-    getCohortSql(getCohortDefinition(cohortId = xSpecCohortId, baseUrl = baseUrl),
-                 baseUrl = baseUrl)
-} else {
-  phevaluatorCohortIds <-
-    c(xSpecCohortId, xSensCohortId, prevalenceCohortId)
-  
-}
+
+CohortDefinitionSet <- getCohortDefinitionSet(
+        settingsFileName = "inst/cohorts.csv",
+        jsonFolder = "inst/cohorts",
+        sqlFolder = "inst/sql/sql_server",
+        cohortFileNameFormat = "%s",
+        cohortFileNameValue = c("cohortId"),
+        packageName = NULL,
+        warnOnMissingJson = TRUE,
+        verbose = FALSE
+)
+
+evaluatedCohorts  <- CohortDefinitionSet[CohortDefinitionSet$cohortId %in% phenotypeCohortIds, ]    
+phevaluatorCohorts  <- CohortDefinitionSet[CohortDefinitionSet$cohortId %in% c(xSpecCohortId, xSensCohortId, prevalenceCohortId), ]    
 
 
+
+xSpecDefinitionSql <- phevaluatorCohorts$sql[CohortDefinitionSet$cohortId == xSpecCohortId]
 xSpecConceptsExtracted <-
   str_extract_all(
     xSpecDefinitionSql,
@@ -261,22 +218,10 @@ CohortArgs <-
 
 # Create analysis package for all cohorts to be evaluated
 pheValuatorAnalysisList <- list()
-if (use_web_api) {
-  cohortDefinitions <- list()
-}
-
 for (i in seq_along(phenotypeCohortIds)) {
   cutPoints = 'EV'
   cohortId = phenotypeCohortIds[i]
-  
-  if (use_web_api) {
-    cohortDefinition <-
-      getCohortDefinition(cohortId = cohortId, baseUrl = baseUrl)
-    cohortDefinitions[[i]] <-
-      getCohortDefinition(cohortId = cohortId, baseUrl = baseUrl)
-  } else {
-    cohortDefinition <- cohortDefinitions[[i]]
-  }
+  cohortDefinition <- evaluatedCohorts[cohortId == cohortId]
   
   
   washoutPeriod <-
@@ -313,19 +258,8 @@ for (i in seq_along(phenotypeCohortIds)) {
     analysis
 }
 
-if (use_web_api) {
-  save(
-    phevaluatorCohorts,
-    evaluatedCohorts,
-    xSpecDefinitionSql,
-    cohortDefinitions,
-    file = 'cohorts/cohorts.rda'
-  )
-}
-
 
 connection <- connect(connectionDetails)
-
 
 # Create cohort table on database, should print counts if successful
 cohortTableNames <- getCohortTableNames(
