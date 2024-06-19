@@ -4,8 +4,9 @@
 .RData
 .Ruserdata
 *.html
-
 results
 Documents/*.html
 Documents/*.tex
 Documents/*.log
+*.tmp
+man

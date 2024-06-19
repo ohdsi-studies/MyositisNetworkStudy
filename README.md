@@ -19,8 +19,9 @@ The Coordinating site is currently in the process of obtaining IRB approval thro
  1. Review the study protocol found in the documents directory and ensure that your site meets the inclusion criteria.
  2. Contact the study team for a submission link.
  3. Clone the repository `git clone https://github.com/ohdsi-studies/MyositisNetworkStudy.git` or using the RStudio GUI.
- 4. Modify the 'env setup' section of the RunMe.R script to connect to your CDM and set metadata for the execution. A file zip file with the results and meta data will be created
- 5. Submit the generated zip file to the coordinating study team using the OneDrive link provided.
+ 4. In RStudio, select 'Build' then 'Install and Restart' to build the package.
+ 5. Modify the 'env setup' section of the RunMe.R script to connect to your CDM and set metadata for the execution. A file zip file with the results and meta data will be created
+ 6. Submit the generated zip file to the coordinating study team using the OneDrive link provided.
 
   
 

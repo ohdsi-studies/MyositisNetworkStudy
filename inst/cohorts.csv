@@ -1,7 +1,4 @@
 atlas_id,cohort_id,cohort_name,logic_description,generate_stats
-1788683,1788683,Revised_PheVal xSpec Adult Dermatomyositis - Extra Specific,NA,TRUE
-1788688,1788688,Revised_PheVal xSens Adult Dermatomyositis - Ultra Sensitive,Adult Dermatomyositis - Building off Phenotype Pheb Feedback,TRUE
-1788504,1788504,PheVal Adult Dermatomyositis - Prevalence,Adult Dermatomyositis - Building off Phenotype Pheb Feedback,TRUE
 1781804,1781804,"Test Adult Dermatomyositis - Sensitive (18+ and 2x DM, incidence)",Adult Dermatomyositis - Building off Phenotype Pheb Feedback,TRUE
 1788567,1788567,Test Adult Dermatomyositis - Sensitive (18+ and 2x DM prevalence),Adult Dermatomyositis - Building off Phenotype Pheb Feedback,TRUE
 1787425,1787425,"Test Adult Dermatomyositis - (Specific, incidence)",NA,TRUE
@@ -10,3 +7,6 @@ atlas_id,cohort_id,cohort_name,logic_description,generate_stats
 1789032,1789032,"Test Adult Dermatomyositis - (Prevalent, IIM antibody = positive)",NA,TRUE
 1788875,1788875,"Test Adult Dermatomyositis - (Specific, provider)",NA,TRUE
 1789289,1789289,Test Adult Dermatomyositis - (Single DM dx),NA,TRUE
+1788683,1788683,Revised_PheVal xSpec Adult Dermatomyositis - Extra Specific,NA,TRUE
+1788688,1788688,Revised_PheVal xSens Adult Dermatomyositis - Ultra Sensitive,Adult Dermatomyositis - Building off Phenotype Pheb Feedback,TRUE
+1788504,1788504,PheVal Adult Dermatomyositis - Prevalence,Adult Dermatomyositis - Building off Phenotype Pheb Feedback,TRUE

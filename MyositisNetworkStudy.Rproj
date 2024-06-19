@@ -1,0 +1,18 @@
+Version: 1.0
+
+RestoreWorkspace: Default
+SaveWorkspace: Default
+AlwaysSaveHistory: Default
+
+EnableCodeIndexing: Yes
+UseSpacesForTab: Yes
+NumSpacesForTab: 2
+Encoding: UTF-8
+
+RnwWeave: Sweave
+LaTeX: pdfLaTeX
+
+BuildType: Package
+PackageUseDevtools: Yes
+PackagePath: //win.ad.jhu.edu/Users$/HOME/data_projects/MyositisNetworkStudy
+PackageInstallArgs: --no-multiarch --with-keep.source

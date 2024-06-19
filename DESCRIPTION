@@ -1,0 +1,20 @@
+Package: MyositisNetworkStudy
+Type: Package
+Title: A Study Package for validating Dermatomyositis cohort definition.
+Version: 0.0.1
+Authors: William Kelly, Ben Martin and Chris Mecoli
+Maintainer: William Kelly <wkelly19@jhmi.edu>
+Description: A Study Package for validating the Dermatomyositis cohort definitions created at Johns Hopkins University
+Imports:
+	CohortDiagnostics (>= 2.2.4),
+  CohortGenerator (>= 0.3.0),
+	ParallelLogger (>= 3.0.0),
+	DatabaseConnector (>= 5.0.0),
+	PheValuator (>= 2.2.11),
+  jsonlite,
+  ParallelLogger
+License: Apache License (>= 2)
+LazyData: TRUE
+RoxygenNote: 7.3.1
+Encoding: UTF-8
+Language: en-US
