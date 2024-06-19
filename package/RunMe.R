@@ -59,13 +59,7 @@ databaseId <- 'JHM_OMOP'
  
 pathToDriver = '~/data_projects/database_drivers'
 ## Auth DLL needed for some MSSQL configurations
-
-
-
-
-
-
-
+Sys.setenv(PATH_TO_AUTH_DLL = '')
 
 
 
@@ -166,7 +160,6 @@ if (exists('connectionString')) {
 }
 
 # Extract cohort definitions for xSpec, xSen, prevalence, and covariate exclusion
-
 CohortDefinitionSet <- getCohortDefinitionSet(
         settingsFileName = "inst/cohorts.csv",
         jsonFolder = "inst/cohorts",
@@ -180,6 +173,49 @@ CohortDefinitionSet <- getCohortDefinitionSet(
 
 evaluatedCohorts  <- CohortDefinitionSet[CohortDefinitionSet$cohortId %in% phenotypeCohortIds, ]    
 phevaluatorCohorts  <- CohortDefinitionSet[CohortDefinitionSet$cohortId %in% c(xSpecCohortId, xSensCohortId, prevalenceCohortId), ]    
+
+
+connection <- connect(connectionDetails)
+
+# Create cohort table on database, should print counts if successful
+cohortTableNames <- getCohortTableNames(
+  cohortTable = cohortTable,
+  cohortInclusionTable = paste0(cohortTable, '_inclusion'),
+  cohortInclusionResultTable = paste0(cohortTable, '_inclusion_result'),
+  cohortInclusionStatsTable = paste0(cohortTable, '_inclusion_stats'),
+  cohortSummaryStatsTable = paste0(cohortTable, '_summary_stats'),
+  cohortCensorStatsTable = paste0(cohortTable, '_censor_stats')
+)
+
+createCohortTables(
+  connection = connection,
+  cohortTableNames = cohortTableNames,
+  cohortDatabaseSchema = cohortDatabaseSchema
+)
+
+
+cohortDefinitionSet <- rbind(phevaluatorCohorts, evaluatedCohorts)
+cohortsGenerated <- generateCohortSet(
+  connection = connection,
+  cdmDatabaseSchema = cdmDatabaseSchema,
+  cohortDatabaseSchema = cohortDatabaseSchema,
+  cohortTableNames = cohortTableNames,
+  cohortDefinitionSet = cohortDefinitionSet
+)
+
+cohortCounts <- getCohortCounts(
+  connection = connection,
+  cohortDatabaseSchema = cohortDatabaseSchema,
+  cohortTable = cohortTableNames$cohortTable
+)
+
+xSpecCohortSize = cohortCounts$cohortSubjects[cohortCounts$cohortId ==  xSpecCohortId]
+if (xSpecCohortSize >= 250){
+  print(paste0('Site validation passed. xSpecCohortSize: ', xSpecCohortSize))
+} else {
+  print(paste0('Site validation FAILED Xspec cohort does not meet minimum size 
+               for participation. xSpecCohortSize: ', xSpecCohortSize))
+}
 
 
 
@@ -216,83 +252,35 @@ CohortArgs <-
     covariateSettings = covariateSettings
   )
 
+
 # Create analysis package for all cohorts to be evaluated
+library(jsonlite)
 pheValuatorAnalysisList <- list()
-for (i in seq_along(phenotypeCohortIds)) {
-  cutPoints = 'EV'
+for(i in seq_along(phenotypeCohortIds)){
+  cutPoints = "EV"
   cohortId = phenotypeCohortIds[i]
-  cohortDefinition <- evaluatedCohorts[cohortId == cohortId]
-  
-  
-  washoutPeriod <-
-    (cohortDefinition$expression$PrimaryCriteria$ObservationWindow[1][['PriorDays']])
-  AlgTestArgs <-
-    createTestPhenotypeAlgorithmArgs(
-      cutPoints = cutPoints,
-      phenotypeCohortId = cohortId,
-      washoutPeriod = washoutPeriod
-    )
-  analysis <- createPheValuatorAnalysis(
-    analysisId = i,
-    description = cohortDefinition$name,
-    createEvaluationCohortArgs = CohortArgs,
-    testPhenotypeAlgorithmArgs = AlgTestArgs
+
+  washoutPeriod <- fromJSON(cohortDefinition$json)$PrimaryCriteria$ObservationWindow$PriorDays
+
+  AlgTestArgs <- createTestPhenotypeAlgorithmArgs(cutPoints = cutPoints,
+                                                  phenotypeCohortId = cohortId,
+                                                  washoutPeriod = washoutPeriod)
+  analysis <- createPheValuatorAnalysis(analysisId = i,
+                                        description = cohortDefinition$cohortName,
+                                        createEvaluationCohortArgs = CohortArgs,
+                                        testPhenotypeAlgorithmArgs = AlgTestArgs)
+  cat(paste0('\n========================================\n',
+             "analysisId = ", i,
+             '\ncutPoints = ', cutPoints,
+             '\nphenotypeCohortId = ', cohortId, '',
+             '\nwashoutPeriod = ', washoutPeriod,
+             '\ndescription = ', cohortDefinition$cohortName
   )
-  cat(
-    paste0(
-      '\n========================================\n',
-      'analysisId = ',
-      i,
-      '\ncutPoints = ',
-      cutPoints,
-      '\nphenotypeCohortId = ',
-      cohortId,
-      '',
-      '\nwashoutPeriod = ',
-      washoutPeriod,
-      '\ndescription = ',
-      cohortDefinition$name
-    )
   )
-  pheValuatorAnalysisList[[length(pheValuatorAnalysisList) + 1]] <-
-    analysis
+  pheValuatorAnalysisList[[length(pheValuatorAnalysisList)+1]] <- analysis
 }
 
 
-connection <- connect(connectionDetails)
-
-# Create cohort table on database, should print counts if successful
-cohortTableNames <- getCohortTableNames(
-  cohortTable = cohortTable,
-  cohortInclusionTable = paste0(cohortTable, '_inclusion'),
-  cohortInclusionResultTable = paste0(cohortTable, '_inclusion_result'),
-  cohortInclusionStatsTable = paste0(cohortTable, '_inclusion_stats'),
-  cohortSummaryStatsTable = paste0(cohortTable, '_summary_stats'),
-  cohortCensorStatsTable = paste0(cohortTable, '_censor_stats')
-)
-
-createCohortTables(
-  connection = connection,
-  cohortTableNames = cohortTableNames,
-  cohortDatabaseSchema = cohortDatabaseSchema
-)
-
-cohortDefinitionSet <- rbind(phevaluatorCohorts, evaluatedCohorts)
-
-cohortsGenerated <- generateCohortSet(
-  connection = connection,
-  cdmDatabaseSchema = cdmDatabaseSchema,
-  cohortDatabaseSchema = cohortDatabaseSchema,
-  cohortTableNames = cohortTableNames,
-  cohortDefinitionSet = cohortDefinitionSet
-)
-
-cohortCounts <- getCohortCounts(
-  connection = connection,
-  cohortDatabaseSchema = cohortDatabaseSchema,
-  cohortTable = cohortTableNames$cohortTable
-)
-print(cohortCounts)
 
 # Execute Cohort Diagnosis
 executeDiagnostics(
@@ -326,18 +314,12 @@ CohortGenerator::dropCohortStatsTables(
   cohortTableNames = cohortTableNames
 )
 
-# Delete plp model state file (large, not human readable, and not needed for the analysis)
-file.remove(
-  list.files(
-    path = 'results',
-    pattern = '^covariates$',
-    full.names = TRUE,
-    recursive = TRUE
-  )
-)
+# Delete uneeded files from output and files that could potentially contain patient level data.
+unlink(list.dirs(path = 'results', recursive = TRUE, pattern = 'plpData_main'), recursive = TRUE)
+unlink(list.files(path = 'results', pattern = '^pv_test_subjects.csv$', full.names = TRUE, recursive = TRUE))
+unlink(list.files(path = 'results', pattern = '^pv_test_subjects_covariates.csv $', full.names = TRUE, recursive = TRUE))
 
-
-# Upload results
+# Save results
 results_file <-
   paste('results_',
         databaseId,
