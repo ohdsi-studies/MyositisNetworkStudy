@@ -3,6 +3,9 @@
 # save them to the study package. This script should not be used during study
 # execution and is included for reference only.
 
+library(CohortGenerator)
+library(ROhdsiWebApi)
+
 # cohorts
 CohortIds <-
   c(1781804,
