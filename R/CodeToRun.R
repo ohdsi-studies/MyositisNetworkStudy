@@ -150,8 +150,8 @@ validate_site <- function(cohortCounts, xSpecCohortId) {
   }
 }
 
-extract_concepts <- function(phevaluatorCohorts, CohortDefinitionSet, xSpecCohortId) {
-  xSpecDefinitionSql <- phevaluatorCohorts$sql[CohortDefinitionSet$cohortId == xSpecCohortId]
+extract_concepts <- function(phevaluatorCohorts, xSpecCohortId) {
+  xSpecDefinitionSql <- phevaluatorCohorts$sql[phevaluatorCohorts$cohortId == xSpecCohortId]
   xSpecConceptsExtracted <- str_extract_all(
     xSpecDefinitionSql,
     '(?<=select concept_id from @vocabulary_database_schema.CONCEPT where concept_id in \\()[0-9,]+(?=\\))'
@@ -190,9 +190,9 @@ create_phevaluator_analysis <- function(phenotypeCohortIds, evaluatedCohorts, Co
   pheValuatorAnalysisList <- list()
   cohortDefinitions <- list()
   for (i in seq_along(phenotypeCohortIds)) {
-    cutPoints <- "EV"
+    cutPoints <- 'EV'
     cohortId <- phenotypeCohortIds[i]
-    cohortDefinition <- evaluatedCohorts[cohortId == cohortId]
+    cohortDefinition <- evaluatedCohorts[evaluatedCohorts$cohortId == cohortId,]
     washoutPeriod <- fromJSON(cohortDefinition$json)$PrimaryCriteria$ObservationWindow$PriorDays
     
     AlgTestArgs <- createTestPhenotypeAlgorithmArgs(
@@ -207,7 +207,7 @@ create_phevaluator_analysis <- function(phenotypeCohortIds, evaluatedCohorts, Co
       testPhenotypeAlgorithmArgs = AlgTestArgs
     )
     cat(paste0('\n========================================\n',
-               "analysisId = ", i,
+               'analysisId = ', i,
                '\ncutPoints = ', cutPoints,
                '\nphenotypeCohortId = ', cohortId,
                '\nwashoutPeriod = ', washoutPeriod,
@@ -289,15 +289,13 @@ setup_directories(outputFolder, exportFolder)
 run_id <- save_metadata(site_name, site_contact, site_contact_email, databaseId)
 
 
-
-
 # Extract cohort definitions for xSpec, xSen, prevalence, and covariate exclusion
 CohortDefinitionSet <- getCohortDefinitionSet(
-  settingsFileName = "inst/cohorts.csv",
-  jsonFolder = "inst/cohorts",
-  sqlFolder = "inst/sql/sql_server",
-  cohortFileNameFormat = "%s",
-  cohortFileNameValue = c("cohortId"),
+  settingsFileName = 'inst/cohorts.csv',
+  jsonFolder = 'inst/cohorts',
+  sqlFolder = 'inst/sql/sql_server',
+  cohortFileNameFormat = '%s',
+  cohortFileNameValue = c('cohortId'),
   packageName = NULL,
   warnOnMissingJson = TRUE,
   verbose = FALSE
@@ -343,7 +341,7 @@ cohortCounts <- getCohortCounts(
 validate_site(cohortCounts, xSpecCohortId)
 
 # Extract concepts
-xSpecConceptsAll <- extract_concepts(phevaluatorCohorts, evaluatedCohorts, xSpecCohortId)
+xSpecConceptsAll <- extract_concepts(phevaluatorCohorts, xSpecCohortId)
 
 # Create covariate settings
 covariateSettings <- create_covariate_settings(xSpecConceptsAll)
