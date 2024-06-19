@@ -8,7 +8,7 @@ The Coordinating site is currently in the process of obtaining IRB approval thro
   
 ### Notes:
   
-1. All site-dependent variables are configured at the 'env setup' section of the RunMe.R script. Please edit those variables according to your site's database needs. The values  used by the coordinating study team at JHU have been preserved as a reference.
+1. All site-dependent variables are configured at the 'env setup' section of the R/CodeToRun.R script. Please edit those variables according to your site's database needs. The values  used by the coordinating study team at JHU have been preserved as a reference.
 2. This script assumes that you have RTools and Java setup to run HADES  packages. [See the instructions from Hades](https://ohdsi.github.io/Hades/rSetup.html).   
 3. The use of either a container or renv is recommended, but not included in the script. Packages will be installed as part of this package. Please ensure that you are in an isolated R environment before executing if needed.
 4. After the study package has been executed, a /results folder and results.zip  file will be created. Please inspect these files to ensure that the contents do   not contain any patient data (they normally should not!) and submit results.zip   using the OneDrive link provided to you. If you need a OneDrive link, please contact the study team. The study team will be notified once files are received.      
