@@ -18,8 +18,7 @@
 #' @import DatabaseConnector 
 #' @return
 #'
-execute_diagnostics_study <- function(evaluatedCohorts,
-                                connectionDetails,
+execute_diagnostics_study <- function(connectionDetails,
                                 connection,
                                 cohortDatabaseSchema,
                                 cdmDatabaseSchema,
@@ -30,8 +29,8 @@ execute_diagnostics_study <- function(evaluatedCohorts,
                                 cohortDefinitionSet) {
   
 
-ParallelLogger::logInfo("Creating cohorts.")
-cohortTableNames <- getCohortTableNames(
+print("Creating cohorts.")
+cohortTableNames <- CohortGenerator::getCohortTableNames(
     cohortTable = cohortTable,
     cohortInclusionTable = paste0(cohortTable, '_inclusion'),
     cohortInclusionResultTable = paste0(cohortTable, '_inclusion_result'),
@@ -40,13 +39,13 @@ cohortTableNames <- getCohortTableNames(
     cohortCensorStatsTable = paste0(cohortTable, '_censor_stats')
   )
 
-  createCohortTables(
+CohortGenerator::createCohortTables(
     connection = connection,
     cohortTableNames = cohortTableNames,
     cohortDatabaseSchema = cohortDatabaseSchema
   )
   
-  cohortsGenerated <- generateCohortSet(
+  cohortsGenerated <- CohortGenerator::generateCohortSet(
     connection = connection,
     cdmDatabaseSchema = cdmDatabaseSchema,
     cohortDatabaseSchema = cohortDatabaseSchema,
@@ -54,9 +53,9 @@ cohortTableNames <- getCohortTableNames(
     cohortDefinitionSet = cohortDefinitionSet
   )
 
-  ParallelLogger::logInfo("Validating that generated cohorts meet requirments for study participation.")
+  print("Validating that generated cohorts meet requirments for study participation.")
 
-  cohortCounts <- getCohortCounts(
+  cohortCounts <- CohortGenerator::getCohortCounts(
     connection = connection,
     cohortDatabaseSchema = cohortDatabaseSchema,
     cohortTable = cohortTableNames$cohortTable
@@ -65,9 +64,9 @@ cohortTableNames <- getCohortTableNames(
   
   
   
-  ParallelLogger::logInfo("Executing cohortDiagnostics.")
-  executeDiagnostics(
-    cohortDefinitionSet = evaluatedCohorts,
+  print("Executing cohortDiagnostics.")
+  CohortDiagnostics::executeDiagnostics(
+    cohortDefinitionSet = cohortDefinitionSet,
     connectionDetails = connectionDetails,
     cohortTable = cohortTableNames$cohortTable,
     cohortDatabaseSchema = cohortDatabaseSchema,

@@ -16,20 +16,24 @@ site_name <- 'Institution name'
 site_contact <- 'John Doe'
 site_contact_email <- 'john.doe@institution.edu'
 
+                                          )
 # CDM connection details. The values used at JHU are included as a reference.
 # Please see https://github.com/OHDSI/DatabaseConnector/raw/main/inst/doc/Connecting.pdf for details
 connectionDetails <- createConnectionDetails(
     dbms = 'sql server',
     server = 'ESMPMDBPR4.WIN.AD.JHU.EDU',
     pathToDriver = '~/data_projects/database_drivers',
-    extraSettings = 'integratedSecurity=true;encrypt=false;',
+    extraSettings = 'integratedSecurity=true;encrypt=false'
   # user = '',
   # password = '',
-  # port = '',
-# Some environments require a connection string to be given (ex JODBC on Linux).
-# Use of a connection string will override the above.
-  # connectionString <- 'jdbc:sqlserver://esmpmdbpr4.esm.johnshopkins.edu:1433;database=Myositis_OMOP;integratedSecurity=true;authenticationScheme=JavaKerberos;encrypt=false'
+  # port = ''
 )
+
+# Some environments require a connection string to be given (ex JODBC on Linux).
+#connectionDetails <- createConnectionDetails(dbms = "sql server",
+#                                             connectionString = connectionString,
+#                                             pathToDriver = '/home/idies/workspace/Storage/<user/persistent/DatabaseDrivers'
+#   )
 
 # Auth DLL needed for some MSSQL configurations
 #Sys.setenv(PATH_TO_AUTH_DLL = '')
@@ -64,7 +68,8 @@ verifyDependencies = FALSE
 xSpecCohortId <- 1788683
 xSensCohortId <- 1788688
 prevalenceCohortId <- 1788504
-phenotypeCohortIds <- c(1781804, 1788567, 1787425, 1788503, 1789031, 1789032, 1788875, 1789289)
+#phenotypeCohortIds <- c(1781804, 1788567, 1787425, 1788503, 1789031, 1789032, 1788875, 1789289)
+phenotypeCohortIds <- 1788683
 
 
 # Output
@@ -78,37 +83,23 @@ phenotype <- 'Dermatomyositis'
 
 ################## Main Execution ##################
 
-
-## Save execution log
-ParallelLogger::addDefaultFileLogger('results/execution_log.txt')
-ParallelLogger::addDefaultErrorReportLogger('results/eerrorReportR.txt')
-on.exit(ParallelLogger::unregisterLogger("DEFAULT_FILE_LOGGER", silent = TRUE))
-on.exit(
-  ParallelLogger::unregisterLogger("DEFAULT_ERRORREPORT_LOGGER", silent = TRUE),
-  add = TRUE
-)
-
-# Install packages
-install_packages(packages)
-
-
 if (verifyDependencies) {
-  ParallelLogger::logInfo("Checking whether correct package versions are installed")
+  print("Checking whether correct package versions are installed")
   verifyDependencies()
 }
 
 # Setup directories
-ParallelLogger::logInfo("(Re)creating results directory.")
+print("(Re)creating results directory.")
 setup_directories(outputFolder, exportFolder)
 
 # Save metadata
-ParallelLogger::logInfo("Exporting metadata.")
+print("Exporting metadata.")
 run_id <- save_metadata(site_name, site_contact, site_contact_email, databaseId)
 
 
 # Extract cohort definitions for xSpec, xSen, prevalence, and covariate exclusion
-ParallelLogger::logInfo("Loading cohort definitions from study package.")
-CohortDefinitionSet <- getCohortDefinitionSet(
+print("Loading cohort definitions from study package.")
+CohortDefinitionSet <- CohortGenerator::getCohortDefinitionSet(
   settingsFileName = 'inst/cohorts.csv',
   jsonFolder = 'inst/cohorts',
   sqlFolder = 'inst/sql/sql_server',
@@ -121,13 +112,12 @@ CohortDefinitionSet <- getCohortDefinitionSet(
 
 
 # Setup CDM connection
-ParallelLogger::logInfo("Setting up database connection.")
-connection <- connect(connectionDetails)
+print("Setting up database connection.")
+connection <- DatabaseConnector::connect(connectionDetails)
 
 # Execute diagnostics
-ParallelLogger::logInfo("Execute CohortDiagnostics.")
-cohortTableNames <- execute_diagnostics_study (evaluatedCohorts,
-                                               connectionDetails,
+print("Execute CohortDiagnostics.")
+cohortTableNames <- execute_diagnostics_study (connectionDetails,
                                                connection,
                                                cohortDatabaseSchema,
                                                cdmDatabaseSchema,
@@ -135,7 +125,7 @@ cohortTableNames <- execute_diagnostics_study (evaluatedCohorts,
                                                databaseId,
                                                minCellCount,
                                                cohortTable,
-                                               cohortDefinitionSet)
+                                               CohortDefinitionSet)
 
 
 

@@ -9,12 +9,12 @@
 #' @param xSpecCohortId 
 #'
 #' @return
-#' @export
+#' @import stringr
 #'
 #' @examples
 extract_concepts <- function(phevaluatorCohorts, xSpecCohortId) {
   xSpecDefinitionSql <- phevaluatorCohorts$sql[phevaluatorCohorts$cohortId == xSpecCohortId]
-  xSpecConceptsExtracted <- str_extract_all(
+  xSpecConceptsExtracted <- stringr::str_extract_all(
     xSpecDefinitionSql,
     '(?<=select concept_id from @vocabulary_database_schema.CONCEPT where concept_id in \\()[0-9,]+(?=\\))'
   )
@@ -97,7 +97,7 @@ execute_phevaluator_study  <- function(phenotype,
                                 phenotypeCohortIds,
                                 CohortDefinitionSet) {
   
-  ParallelLogger::logInfo("Configuring PheValuator.")
+  print("Configuring PheValuator.")
   # Extract concepts
 
   evaluatedCohorts <- CohortDefinitionSet[CohortDefinitionSet$cohortId %in% phenotypeCohortIds, ]    
@@ -130,8 +130,8 @@ execute_phevaluator_study  <- function(phenotype,
   pheValuatorAnalysisList <- create_phevaluator_analysis_list(phenotypeCohortIds, CohortDefinitionSet, CohortArgs)
   
   
-  ParallelLogger::logInfo("Executing PheValuator.")
-  referenceTable <- runPheValuatorAnalyses(
+  print("Executing PheValuator.")
+  referenceTable <- PheValuator::runPheValuatorAnalyses(
               phenotype = phenotype,
               connectionDetails = connectionDetails,
               cdmDatabaseSchema = cdmDatabaseSchema,
