@@ -1,7 +1,3 @@
-# This study has been moved to https://github.com/ohdsi-studies/MyositisNetworkStudy and this repository is no longer updated.OHDSI Network Study: Dermatomyositis Phenotype 
-
-<br/><br/><br/><br/><br/><br/><br/><br/>
-
 OHDSI Network Study: Dermatomyositis Phenotype Evaluation
 =================
 
