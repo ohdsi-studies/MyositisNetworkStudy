@@ -16,7 +16,6 @@ site_name <- 'Institution name'
 site_contact <- 'John Doe'
 site_contact_email <- 'john.doe@institution.edu'
 
-                                          )
 # CDM connection details. The values used at JHU are included as a reference.
 # Please see https://github.com/OHDSI/DatabaseConnector/raw/main/inst/doc/Connecting.pdf for details
 connectionDetails <- createConnectionDetails(
@@ -42,10 +41,10 @@ connectionDetails <- createConnectionDetails(
 # Sys.setenv(GITHUB_PAT = '')
 
 # CDM Schema details. The values used at JHU are included as a reference.
-cohortDatabaseSchema <- 'Myositis_OMOP.Temp'
-cdmDatabaseSchema <- 'Myositis_OMOP.dbo'
-workDatabaseSchema <- 'Myositis_OMOP.Temp'
-cohortTable <- 'Dermatomyositis'
+cohortDatabaseSchema <- 'Myositis_OMOP.Temp'  # Schema for temporary cohorts to be saved to.
+cdmDatabaseSchema <- 'Myositis_OMOP.dbo' # Schema for OMOP 5.4 CDM
+workDatabaseSchema <- 'Myositis_OMOP.Temp' # Temporary Schema for PheValuator temp table. May be the same as the CDM.
+cohortTable <- 'Dermatomyositis' # Namae of the cohort table to be generated.
 
 # Exclude results that do not meet the minimum cell count to protect participant privacy.
 # If your site governance body requires a larger minimum, contact the study team before proceeding.
