@@ -1,12 +1,10 @@
 ################## README ################## 
 # This is an OHDSI study being coordinated by the Johns Hopkins Myositis Center.
 # Please see our post on the OHDSI forum for links to the protocol, repository, or for more information.
-#
-# Packages will be installed by this script. Please see the repository readme for
-# details on setting up an isolated environment and for general information on study package execution.
 
 
-################## Environment Setup ##################
+
+################## Environment Setup #######
 # All variables that need to be changed are in this section.
 library(MyositisNetworkStudy)
 
@@ -58,7 +56,7 @@ options(java.parameters = '-Xmx10000m')
 databaseId <- 'JHM_OMOP'
 
 
-################# Study Variables ########################
+################# Study Variables ###########
 # These should not be changed by the site
 verifyDependencies = FALSE
 
@@ -80,7 +78,7 @@ phenotype <- 'Dermatomyositis'
 
 
 
-################## Main Execution ##################
+################## Main Execution ###########
 
 if (verifyDependencies) {
   print("Checking whether correct package versions are installed")
