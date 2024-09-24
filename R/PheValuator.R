@@ -12,17 +12,6 @@
 #' @import stringr
 #'
 #' @examples
-extract_concepts <- function(phevaluatorCohorts, xSpecCohortId) {
-  xSpecDefinitionSql <- phevaluatorCohorts$sql[phevaluatorCohorts$cohortId == xSpecCohortId]
-  xSpecConceptsExtracted <- stringr::str_extract_all(
-    xSpecDefinitionSql,
-    '(?<=select concept_id from @vocabulary_database_schema.CONCEPT where concept_id in \\()[0-9,]+(?=\\))'
-  )
-  xSpecConceptsAll <- paste(xSpecConceptsExtracted[[1]], collapse = ',')
-  return(xSpecConceptsAll)
-}
-
-
 #' create_phevaluator_analysis_list
 #'
 #' @param phenotypeCohortIds 
@@ -102,7 +91,7 @@ execute_phevaluator_study  <- function(phenotype,
 
   evaluatedCohorts <- CohortDefinitionSet[CohortDefinitionSet$cohortId %in% phenotypeCohortIds, ]    
   phevaluatorCohorts <- CohortDefinitionSet[CohortDefinitionSet$cohortId %in% c(xSpecCohortId, xSensCohortId, prevalenceCohortId), ]    
-  xSpecConceptsAll <- extract_concepts(phevaluatorCohorts, xSpecCohortId)
+  xSpecConceptsAll <- c(257628,76685,373182,4215003,79804,78149,4216406)
   
   # Create covariate settings
   covariateSettings <- createDefaultCovariateSettings(
