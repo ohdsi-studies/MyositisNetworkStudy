@@ -65,7 +65,7 @@ verifyDependencies = FALSE
 xSpecCohortId <- 1788683
 xSensCohortId <- 1788688
 prevalenceCohortId <- 1788504
-phenotypeCohortIds <- c(1788683, 1788688, 1781804, 1788567, 1787425, 1788503, 1789031, 1789032, 1788875, 1789289)
+phenotypeCohortIds <- c(1788683, 1788504, 1781804, 1788567, 1787425, 1788503, 1789031, 1789032, 1788875, 1789289)
 
 # Output
 outputFolder <- 'results/phevaluator'
