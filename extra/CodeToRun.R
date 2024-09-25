@@ -136,7 +136,7 @@ referenceTable <- execute_phevaluator_study(phenotype,
                                       xSensCohortId,
                                       prevalenceCohortId,
                                       phenotypeCohortIds,
-                                      CohortDefinitionSet)
+                                      CohortDefinitionSet=CohortDefinitionSet)
 
 # Clean up
 #clean_up_tables(connectionDetails, cohortDatabaseSchema, cohortTableNames)
