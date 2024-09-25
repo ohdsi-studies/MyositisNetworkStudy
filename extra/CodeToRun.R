@@ -7,7 +7,7 @@
 ################## Environment Setup #######
 # All variables that need to be changed are in this section.
 library(MyositisNetworkStudy)
-
+library(dplyr)
 
 # Meta data for site
 site_name <- 'Institution name'
