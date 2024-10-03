@@ -14,7 +14,8 @@ The Coordinating site is currently in the process of obtaining IRB approval thro
  4. Open your study package in RStudio. Use `renv::restore()` to install dependencies. Tip: On windows UNC paths, Sys.setenv(R_INSTALL_STAGED = FALSE) my be useful if encountering permission denied errors while installing dependencies using renv.
  4. In RStudio, select 'Build' then 'Load all' to build the package and load it into memory using devtools.
  5. Modify the 'env setup' section of the `extra/CodeToRun.R` script to connect to your CDM and set metadata for the execution. A file zip file with the results and meta data will be created
- 6. Submit the generated zip file to the coordinating study team using the OneDrive link provided.
+ 6. Execute the modified CodeToRun.R script
+ 7. Submit the generated zip file to the coordinating study team using the OneDrive link provided.
 
   
 
