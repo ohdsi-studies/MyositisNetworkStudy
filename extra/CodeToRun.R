@@ -18,7 +18,7 @@ site_contact_email <- 'john.doe@institution.edu'
 # Please see https://github.com/OHDSI/DatabaseConnector/raw/main/inst/doc/Connecting.pdf for details
 connectionDetails <- createConnectionDetails(
     dbms = 'sql server',
-    server = 'ESMPMDBPR4.WIN.AD.JHU.EDU',
+    server = '',
     pathToDriver = '~/data_projects/database_drivers',
     extraSettings = 'integratedSecurity=true;encrypt=false'
   # user = '',
@@ -29,7 +29,7 @@ connectionDetails <- createConnectionDetails(
 # Some environments require a connection string to be given (ex JODBC on Linux).
 #connectionDetails <- createConnectionDetails(dbms = "sql server",
 #                                             connectionString = connectionString,
-#                                             pathToDriver = '/home/idies/workspace/Storage/<user/persistent/DatabaseDrivers'
+#                                             pathToDriver = ''
 #   )
 
 # Auth DLL needed for some MSSQL configurations
@@ -39,21 +39,21 @@ connectionDetails <- createConnectionDetails(
 # Sys.setenv(GITHUB_PAT = '')
 
 # CDM Schema details. The values used at JHU are included as a reference.
-cohortDatabaseSchema <- 'Myositis_OMOP.Temp'  # Schema for temporary cohorts to be saved to.
-cdmDatabaseSchema <- 'Myositis_OMOP.dbo' # Schema for OMOP 5.4 CDM
-workDatabaseSchema <- 'Myositis_OMOP.Temp' # Temporary Schema for PheValuator temp table. May be the same as the CDM.
-cohortTable <- 'Dermatomyositis' # Namae of the cohort table to be generated.
+cohortDatabaseSchema <- ''  # Schema for temporary cohorts to be saved to.
+cdmDatabaseSchema <- '' # Schema for OMOP 5.4 CDM
+workDatabaseSchema <- '' # Temporary Schema for PheValuator temp table. May be the same as the CDM.
+cohortTable <- '' # Namae of the cohort table to be generated.
 
 # Exclude results that do not meet the minimum cell count to protect participant privacy.
 # If your site governance body requires a larger minimum, contact the study team before proceeding.
 minCellCount <- 5
 
 # JHU specific workarounds for Java installation. These are included as a reference
-Sys.setenv(JAVA_HOME = 'C:/Program Files/Microsoft/jdk-17.0.8.101-hotspot')
-options(java.parameters = '-Xmx10000m')
+# Sys.setenv(JAVA_HOME = '')
+# options(java.parameters = '-Xmx10000m')
 
 # A short name to describe your cohort. Do not include spaces. The value used at JHU is shown as a reference.
-databaseId <- 'JHM_OMOP'
+databaseId <- ''
 
 
 ################# Study Variables ###########
