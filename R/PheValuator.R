@@ -109,6 +109,8 @@ execute_phevaluator_study  <- function(phenotype,
 
   # Create evaluation cohort arguments
   CohortArgs <- createCreateEvaluationCohortArgs(
+    daysFromxSpec = 14,
+    lowerAgeLimit = 18,
     xSpecCohortId = xSpecCohortId,
     xSensCohortId = xSensCohortId,
     prevalenceCohortId = prevalenceCohortId,
