@@ -139,7 +139,7 @@ referenceTable <- execute_phevaluator_study(phenotype,
                                       CohortDefinitionSet=CohortDefinitionSet)
 
 # Clean up
-#clean_up_tables(connectionDetails, cohortDatabaseSchema, cohortTableNames)
+clean_up_tables(connectionDetails, cohortDatabaseSchema, cohortTableNames)
 
 # Save results
 save_results(databaseId, run_id)
