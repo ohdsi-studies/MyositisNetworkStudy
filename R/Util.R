@@ -78,8 +78,12 @@ clean_up_tables <- function(connectionDetails, cohortDatabaseSchema, cohortTable
     cohortTableNames = cohortTableNames
   )
   
+  # Remove plp models to save space
+  dirs_to_unlink <- list.dirs(path = 'results', recursive = TRUE)
+  dirs_to_unlink <- dirs_to_unlink[grep('plpData_main', dirs_to_unlink)]
+  unlink(dirs_to_unlink, recursive = TRUE)
+  
   # Delete unneeded files from output and files that could potentially contain patient level data.
-  unlink(list.dirs(path = 'results', recursive = TRUE, pattern = 'plpData_main'), recursive = TRUE)
   unlink(list.files(path = 'results', pattern = '^pv_test_subjects.csv$', full.names = TRUE, recursive = TRUE))
   unlink(list.files(path = 'results', pattern = '^pv_test_subjects_covariates.csv$', full.names = TRUE, recursive = TRUE))
 }
