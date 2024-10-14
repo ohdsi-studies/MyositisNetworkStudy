@@ -69,7 +69,7 @@ validate_site <- function(cohortCounts, xSpecCohortId) {
 #' @param cohortTableNames 
 #'
 #' @return
-#'
+#' @export
 #' @examples
 clean_up_tables <- function(connectionDetails, cohortDatabaseSchema, cohortTableNames) {
   CohortGenerator::dropCohortStatsTables(
