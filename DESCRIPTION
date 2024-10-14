@@ -14,7 +14,8 @@ Imports:
     jsonlite,
     dplyr,
     PatientLevelPrediction (>= 2.2.11),
-    stringr
+    stringr,
+    devtools
 Remotes:
   OHDSI/CohortDiagnostics,
   OHDSI/CohortGenerator,

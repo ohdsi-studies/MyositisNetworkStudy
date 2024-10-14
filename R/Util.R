@@ -86,6 +86,9 @@ clean_up_tables <- function(connectionDetails, cohortDatabaseSchema, cohortTable
   # Delete unneeded files from output and files that could potentially contain patient level data.
   unlink(list.files(path = 'results', pattern = '^pv_test_subjects.csv$', full.names = TRUE, recursive = TRUE))
   unlink(list.files(path = 'results', pattern = '^pv_test_subjects_covariates.csv$', full.names = TRUE, recursive = TRUE))
+  
+  # Delete all .rds files from phevaluator results
+  unlink(list.files(path = 'phevaluator', pattern = '\\.rds$', full.names = TRUE, recursive = TRUE))
 }
 
 
