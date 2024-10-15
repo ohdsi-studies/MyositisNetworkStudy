@@ -88,7 +88,7 @@ clean_up_tables <- function(connectionDetails, cohortDatabaseSchema, cohortTable
   unlink(list.files(path = 'results', pattern = '^pv_test_subjects_covariates.csv$', full.names = TRUE, recursive = TRUE))
   
   # Delete all .rds files from phevaluator results
-  unlink(list.files(path = 'phevaluator', pattern = '\\.rds$', full.names = TRUE, recursive = TRUE))
+  unlink(list.files(path = 'results/phevaluator', pattern = '\\.rds$', full.names = TRUE, recursive = TRUE))
 }
 
 
